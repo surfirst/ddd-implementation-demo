@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.enrollment.infrastructure.mybatis.RegistrationEnrollmentMapper">
+
+  <resultMap id="RegistrationEnrollmentRowMap" type="com.example.enrollment.infrastructure.mybatis.model.RegistrationEnrollmentRow">
+    <id property="id" column="id" />
+    <result property="email" column="email" />
+    <result property="fullName" column="full_name" />
+    <result property="otpPassword" column="otp_password" />
+    <result property="otpExpiration" column="otp_expiration" typeHandler="org.apache.ibatis.type.InstantTypeHandler" />
+    <result property="otpLength" column="otp_length" />
+    <result property="otpLifeSpan" column="otp_life_span" />
+    <result property="createdAt" column="created_at" typeHandler="org.apache.ibatis.type.InstantTypeHandler" />
+    <result property="cmsId" column="cms_id" />
+    <result property="displayName" column="display_name" />
+  </resultMap>
+
+  <insert id="insert" parameterType="com.example.enrollment.infrastructure.mybatis.model.RegistrationEnrollmentRow">
+    INSERT INTO registration_enrollments (
+      id, email, full_name, otp_password, otp_expiration, otp_length, otp_life_span, created_at, cms_id, display_name
+    ) VALUES (
+      #{id},
+      #{email},
+      #{fullName},
+      #{otpPassword},
+      #{otpExpiration,javaType=java.time.Instant,typeHandler=org.apache.ibatis.type.InstantTypeHandler},
+      #{otpLength},
+      #{otpLifeSpan},
+      #{createdAt,javaType=java.time.Instant,typeHandler=org.apache.ibatis.type.InstantTypeHandler},
+      #{cmsId},
+      #{displayName}
+    )
+  </insert>
+
+  <select id="selectById" parameterType="string" resultMap="RegistrationEnrollmentRowMap">
+    SELECT id, email, full_name, otp_password, otp_expiration, otp_length, otp_life_span, created_at, cms_id, display_name
+    FROM registration_enrollments
+    WHERE id = #{id}
+  </select>
+
+  <update id="updateEnrolledPlayer">
+    UPDATE registration_enrollments
+    SET cms_id = #{cmsId}, display_name = #{displayName}
+    WHERE id = #{id}
+  </update>
+</mapper>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.enrollment.infrastructure.mybatis.EnrollmentMapper">
+
+  <resultMap id="EnrollmentRowMap" type="com.example.enrollment.infrastructure.mybatis.model.EnrollmentRow">
+    <id property="id" column="id" />
+    <result property="name" column="name" />
+    <result property="createdAt" column="created_at" typeHandler="org.apache.ibatis.type.InstantTypeHandler" />
+  </resultMap>
+
+  <insert id="insert" parameterType="com.example.enrollment.infrastructure.mybatis.model.EnrollmentRow">
+    INSERT INTO enrollments (id, name, created_at)
+    VALUES (#{id}, #{name}, #{createdAt,javaType=java.time.Instant,typeHandler=org.apache.ibatis.type.InstantTypeHandler})
+  </insert>
+
+  <select id="selectById" parameterType="string" resultMap="EnrollmentRowMap">
+    SELECT id, name, created_at FROM enrollments WHERE id = #{id}
+  </select>
+
+  <select id="selectAll" resultMap="EnrollmentRowMap">
+    SELECT id, name, created_at FROM enrollments ORDER BY created_at DESC
+  </select>
+</mapper>

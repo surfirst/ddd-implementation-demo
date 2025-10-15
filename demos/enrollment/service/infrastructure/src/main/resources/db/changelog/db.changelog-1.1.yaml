@@ -1,0 +1,60 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2
+      author: demo
+      changes:
+        - createTable:
+            tableName: registration_enrollments
+            columns:
+              - column:
+                  name: id
+                  type: varchar(64)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: email
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: full_name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: otp_password
+                  type: varchar(32)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: otp_expiration
+                  type: timestamp(6)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: otp_length
+                  type: int
+                  constraints:
+                    nullable: true
+              - column:
+                  name: otp_life_span
+                  type: int
+                  constraints:
+                    nullable: true
+              - column:
+                  name: created_at
+                  type: timestamp(6)
+                  defaultValueComputed: CURRENT_TIMESTAMP(6)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: cms_id
+                  type: varchar(64)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: display_name
+                  type: varchar(255)
+                  constraints:
+                    nullable: true
