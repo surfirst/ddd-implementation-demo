@@ -1,8 +1,8 @@
 package com.example.enrollment.application.enrollment;
 
-import com.example.enrollment.domain.enrollment.Enrollment;
 import com.example.enrollment.domain.enrollment.EnrollmentId;
 import com.example.enrollment.domain.enrollment.EnrollmentRepository;
+import com.example.enrollment.domain.enrollment.EnrollmentRecord;
 
 import java.time.Instant;
 import java.util.List;
@@ -27,7 +27,7 @@ public class EnrollmentQueryService {
     }
 
     public record EnrollmentView(String id, String name, Instant createdAt) {
-        public static EnrollmentView from(Enrollment e) {
+        public static EnrollmentView from(EnrollmentRecord e) {
             return new EnrollmentView(e.getId().getValue(), e.getName(), e.getCreatedAt());
         }
     }

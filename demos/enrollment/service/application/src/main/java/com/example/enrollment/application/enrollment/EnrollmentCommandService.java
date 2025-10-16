@@ -1,6 +1,6 @@
 package com.example.enrollment.application.enrollment;
 
-import com.example.enrollment.domain.enrollment.Enrollment;
+import com.example.enrollment.domain.enrollment.EnrollmentRecord;
 import com.example.enrollment.domain.enrollment.EnrollmentRepository;
 
 public class EnrollmentCommandService {
@@ -11,7 +11,7 @@ public class EnrollmentCommandService {
     }
 
     public String create(String name) {
-        Enrollment e = Enrollment.create(name);
+        EnrollmentRecord e = EnrollmentRecord.create(name);
         repository.save(e);
         return e.getId().getValue();
     }

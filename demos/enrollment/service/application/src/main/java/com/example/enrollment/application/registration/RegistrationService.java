@@ -40,7 +40,7 @@ public class RegistrationService {
         this.dateTimeProvider = Objects.requireNonNull(dateTimeProvider);
     }
 
-    public Enrollment verifyCaptchaAndStartEnrollment(PlayerInfo playerInfo, String captcha, SupportedLanguage lang) {
+    public RegistrationEnrollment verifyCaptchaAndStartEnrollment(PlayerInfo playerInfo, String captcha, SupportedLanguage lang) {
         if (playerInfo == null || captcha == null) {
             throw new IllegalArgumentException("playerInfo and captcha are required");
         }
@@ -56,7 +56,7 @@ public class RegistrationService {
             throw new com.example.enrollment.domain.exceptions.ExistingIDNDobEnrollmentException("Existing ID & DoB");
         }
 
-        Enrollment enrollment = Enrollment.start(playerInfo, dateTimeProvider);
+        RegistrationEnrollment enrollment = RegistrationEnrollment.start(playerInfo, dateTimeProvider);
         enrollmentRepository.addEnrollment(enrollment);
 
         Map<String, Object> paras = new HashMap<>();
@@ -68,7 +68,7 @@ public class RegistrationService {
     }
 
     public void verifyOtp(String enrollmentId, String otpPassword, SupportedLanguage lang) {
-        Enrollment enrollment = enrollmentRepository.getEnrollment(enrollmentId);
+        RegistrationEnrollment enrollment = enrollmentRepository.getEnrollment(enrollmentId);
         if (enrollment == null) throw new IllegalArgumentException("enrollment not found");
         if (!Objects.equals(enrollment.getOtp().getPassword(), otpPassword)) {
             throw new IllegalArgumentException("invalid otp");

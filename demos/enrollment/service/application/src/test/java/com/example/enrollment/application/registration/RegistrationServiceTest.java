@@ -4,8 +4,9 @@ import com.example.enrollment.domain.emailtemplates.EmailTemplate;
 import com.example.enrollment.domain.emailtemplates.EmailTemplateManager;
 import com.example.enrollment.domain.emailtemplates.EmailTemplateRepository;
 import com.example.enrollment.domain.enrollmentprocess.EnrolledPlayer;
-import com.example.enrollment.domain.enrollmentprocess.Enrollment;
+import com.example.enrollment.domain.enrollmentprocess.Otp;
 import com.example.enrollment.domain.enrollmentprocess.PlayerInfo;
+import com.example.enrollment.domain.enrollmentprocess.RegistrationEnrollment;
 import com.example.enrollment.domain.enrollmentprocess.RegistrationEnrollmentRepository;
 import com.example.enrollment.domain.enrollmentprocess.ports.CaptchaService;
 import com.example.enrollment.domain.enrollmentprocess.ports.GlobalSettings;
@@ -86,9 +87,9 @@ class RegistrationServiceTest {
         EmailTemplateManager m = managerWith("otp", "$$otp$$");
         RegistrationService s = serviceWith(m);
 
-        ArgumentCaptor<Enrollment> captor = ArgumentCaptor.forClass(Enrollment.class);
+        ArgumentCaptor<RegistrationEnrollment> captor = ArgumentCaptor.forClass(RegistrationEnrollment.class);
 
-        Enrollment enrollment = s.verifyCaptchaAndStartEnrollment(playerInfo(), "captcha", SupportedLanguage.EN);
+        RegistrationEnrollment enrollment = s.verifyCaptchaAndStartEnrollment(playerInfo(), "captcha", SupportedLanguage.EN);
         verify(repo, times(1)).addEnrollment(captor.capture());
         verify(mailService, times(1)).send(eq("surfirst@yeah.net"), eq("otp"), eq(captor.getValue().getOtp().getPassword()));
         assertNotNull(enrollment);
@@ -108,8 +109,8 @@ class RegistrationServiceTest {
         EmailTemplateManager m = managerWith("otp", "$$player_id$$");
         RegistrationService s = serviceWith(m);
 
-        ArgumentCaptor<Enrollment> captor = ArgumentCaptor.forClass(Enrollment.class);
-        Enrollment enrollment = s.verifyCaptchaAndStartEnrollment(playerInfo(), "captcha", SupportedLanguage.EN);
+        ArgumentCaptor<RegistrationEnrollment> captor = ArgumentCaptor.forClass(RegistrationEnrollment.class);
+        RegistrationEnrollment enrollment = s.verifyCaptchaAndStartEnrollment(playerInfo(), "captcha", SupportedLanguage.EN);
         verify(repo).addEnrollment(captor.capture());
 
         when(repo.getEnrollment(eq(captor.getValue().getId()))).thenReturn(captor.getValue());
@@ -126,7 +127,7 @@ class RegistrationServiceTest {
         EmailTemplateManager m = managerWith("welcome", "$$player_id$$");
         RegistrationService s = serviceWith(m);
 
-        Enrollment enrollment = s.verifyCaptchaAndStartEnrollment(playerInfo(), "captcha", SupportedLanguage.EN);
+        RegistrationEnrollment enrollment = s.verifyCaptchaAndStartEnrollment(playerInfo(), "captcha", SupportedLanguage.EN);
         when(repo.getEnrollment(enrollment.getId())).thenReturn(enrollment);
         when(pm.enrollPlayer(any())).thenReturn(new EnrolledPlayer("mock_id", null));
         when(pm.getPlayerDetail(anyString())).thenReturn(Collections.emptyMap());
@@ -141,7 +142,7 @@ class RegistrationServiceTest {
         EmailTemplateManager m = managerWith("welcome", "$$player_name$$|$$rank$$");
         RegistrationService s = serviceWith(m);
 
-        Enrollment enrollment = s.verifyCaptchaAndStartEnrollment(playerInfo(), "captcha", SupportedLanguage.EN);
+        RegistrationEnrollment enrollment = s.verifyCaptchaAndStartEnrollment(playerInfo(), "captcha", SupportedLanguage.EN);
         when(repo.getEnrollment(enrollment.getId())).thenReturn(enrollment);
         when(pm.enrollPlayer(any())).thenReturn(new EnrolledPlayer("mock_id", null));
         when(pm.getPlayerDetail(anyString())).thenReturn(new HashMap<>() {{
@@ -172,7 +173,7 @@ class RegistrationServiceTest {
         wallets.add(broken);
 
         RegistrationService s = serviceWith(m);
-        Enrollment enrollment = s.verifyCaptchaAndStartEnrollment(playerInfo(), "captcha", SupportedLanguage.EN);
+        RegistrationEnrollment enrollment = s.verifyCaptchaAndStartEnrollment(playerInfo(), "captcha", SupportedLanguage.EN);
         when(repo.getEnrollment(enrollment.getId())).thenReturn(enrollment);
         when(pm.enrollPlayer(any())).thenReturn(new EnrolledPlayer("mock_id", null));
         when(pm.getPlayerDetail(anyString())).thenReturn(new HashMap<>() {{

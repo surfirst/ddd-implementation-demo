@@ -1,9 +1,9 @@
 package com.example.enrollment.infrastructure.mybatis;
 
 import com.example.enrollment.domain.enrollmentprocess.EnrolledPlayer;
-import com.example.enrollment.domain.enrollmentprocess.Enrollment;
 import com.example.enrollment.domain.enrollmentprocess.Otp;
 import com.example.enrollment.domain.enrollmentprocess.PlayerInfo;
+import com.example.enrollment.domain.enrollmentprocess.RegistrationEnrollment;
 import com.example.enrollment.domain.enrollmentprocess.RegistrationEnrollmentRepository;
 import com.example.enrollment.infrastructure.mybatis.model.RegistrationEnrollmentRow;
 import org.springframework.context.annotation.Profile;
@@ -22,7 +22,7 @@ public class MyBatisRegistrationEnrollmentRepository implements RegistrationEnro
     }
 
     @Override
-    public void addEnrollment(Enrollment enrollment) {
+    public void addEnrollment(RegistrationEnrollment enrollment) {
         RegistrationEnrollmentRow row = new RegistrationEnrollmentRow();
         row.setId(enrollment.getId());
         row.setEmail(enrollment.getPlayerInfo().getEmail());
@@ -36,7 +36,7 @@ public class MyBatisRegistrationEnrollmentRepository implements RegistrationEnro
     }
 
     @Override
-    public Enrollment getEnrollment(String id) {
+    public RegistrationEnrollment getEnrollment(String id) {
         RegistrationEnrollmentRow row = mapper.selectById(id);
         if (row == null) return null;
         PlayerInfo pi = PlayerInfo.create(row.getEmail(), row.getFullName());
@@ -47,7 +47,7 @@ public class MyBatisRegistrationEnrollmentRepository implements RegistrationEnro
         if (row.getCmsId() != null) {
             ep = new EnrolledPlayer(row.getCmsId(), row.getDisplayName());
         }
-        return Enrollment.rehydrate(row.getId(), pi, otp, ep);
+        return RegistrationEnrollment.rehydrate(row.getId(), pi, otp, ep);
     }
 
     @Override

@@ -1,8 +1,8 @@
 package com.example.enrollment.api.web;
 
 import com.example.enrollment.application.registration.RegistrationService;
-import com.example.enrollment.domain.enrollmentprocess.Enrollment;
 import com.example.enrollment.domain.enrollmentprocess.PlayerInfo;
+import com.example.enrollment.domain.enrollmentprocess.RegistrationEnrollment;
 import com.example.enrollment.domain.shared.SupportedLanguage;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +24,7 @@ public class RegistrationController {
                                                @RequestParam(name = "lang", defaultValue = "EN") String lang) {
         SupportedLanguage language = SupportedLanguage.valueOf(lang);
         PlayerInfo player = PlayerInfo.create(request.email(), request.fullName());
-        Enrollment enrollment = registrationService.verifyCaptchaAndStartEnrollment(player, request.captcha(), language);
+        RegistrationEnrollment enrollment = registrationService.verifyCaptchaAndStartEnrollment(player, request.captcha(), language);
         return ResponseEntity.created(URI.create("/api/registration/" + enrollment.getId()))
                 .body(new StartResponse(enrollment.getId()));
     }

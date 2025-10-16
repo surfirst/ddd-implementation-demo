@@ -3,24 +3,24 @@ package com.example.enrollment.domain.enrollment;
 import java.time.Instant;
 import java.util.Objects;
 
-public final class Enrollment {
+public final class EnrollmentRecord {
     private final EnrollmentId id;
     private final String name;
     private final Instant createdAt;
 
-    private Enrollment(EnrollmentId id, String name, Instant createdAt) {
+    private EnrollmentRecord(EnrollmentId id, String name, Instant createdAt) {
         this.id = id;
         this.name = name;
         this.createdAt = createdAt;
     }
 
-    public static Enrollment create(String name) {
+    public static EnrollmentRecord create(String name) {
         Objects.requireNonNull(name, "name");
-        return new Enrollment(EnrollmentId.newId(), name, Instant.now());
+        return new EnrollmentRecord(EnrollmentId.newId(), name, Instant.now());
     }
 
-    public static Enrollment rehydrate(EnrollmentId id, String name, Instant createdAt) {
-        return new Enrollment(id, name, createdAt);
+    public static EnrollmentRecord rehydrate(EnrollmentId id, String name, Instant createdAt) {
+        return new EnrollmentRecord(id, name, createdAt);
     }
 
     public EnrollmentId getId() {

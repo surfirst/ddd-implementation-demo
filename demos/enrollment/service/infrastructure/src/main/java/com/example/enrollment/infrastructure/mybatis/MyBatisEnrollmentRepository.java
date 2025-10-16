@@ -1,8 +1,8 @@
 package com.example.enrollment.infrastructure.mybatis;
 
-import com.example.enrollment.domain.enrollment.Enrollment;
 import com.example.enrollment.domain.enrollment.EnrollmentId;
 import com.example.enrollment.domain.enrollment.EnrollmentRepository;
+import com.example.enrollment.domain.enrollment.EnrollmentRecord;
 import com.example.enrollment.infrastructure.mybatis.model.EnrollmentRow;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
@@ -21,7 +21,7 @@ public class MyBatisEnrollmentRepository implements EnrollmentRepository {
     }
 
     @Override
-    public void save(Enrollment enrollment) {
+    public void save(EnrollmentRecord enrollment) {
         EnrollmentRow row = new EnrollmentRow();
         row.setId(enrollment.getId().getValue());
         row.setName(enrollment.getName());
@@ -30,16 +30,16 @@ public class MyBatisEnrollmentRepository implements EnrollmentRepository {
     }
 
     @Override
-    public Optional<Enrollment> findById(EnrollmentId id) {
+    public Optional<EnrollmentRecord> findById(EnrollmentId id) {
         EnrollmentRow row = mapper.selectById(id.getValue());
         if (row == null) return Optional.empty();
-        return Optional.of(Enrollment.rehydrate(EnrollmentId.fromString(row.getId()), row.getName(), row.getCreatedAt()));
+        return Optional.of(EnrollmentRecord.rehydrate(EnrollmentId.fromString(row.getId()), row.getName(), row.getCreatedAt()));
     }
 
     @Override
-    public List<Enrollment> findAll() {
+    public List<EnrollmentRecord> findAll() {
         return mapper.selectAll().stream()
-                .map(r -> Enrollment.rehydrate(EnrollmentId.fromString(r.getId()), r.getName(), r.getCreatedAt()))
+                .map(r -> EnrollmentRecord.rehydrate(EnrollmentId.fromString(r.getId()), r.getName(), r.getCreatedAt()))
                 .collect(Collectors.toList());
     }
 }
