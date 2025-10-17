@@ -1,8 +1,5 @@
 package com.example.enrollment.infrastructure.config;
 
-import com.example.enrollment.application.enrollment.EnrollmentCommandService;
-import com.example.enrollment.application.enrollment.EnrollmentQueryService;
-import com.example.enrollment.domain.enrollment.EnrollmentRepository;
 import com.example.enrollment.application.registration.RegistrationService;
 import com.example.enrollment.domain.emailtemplates.EmailTemplateManager;
 import com.example.enrollment.domain.emailtemplates.EmailTemplateRepository;
@@ -23,16 +20,6 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class InfrastructureConfig {
-
-    @Bean
-    public EnrollmentCommandService enrollmentCommandService(EnrollmentRepository repository) {
-        return new EnrollmentCommandService(repository);
-    }
-
-    @Bean
-    public EnrollmentQueryService enrollmentQueryService(EnrollmentRepository repository) {
-        return new EnrollmentQueryService(repository);
-    }
 
     // ----- Registration flow wiring (mock/db profiles) -----
     @Bean
