@@ -5,7 +5,7 @@ import com.example.enrollment.domain.enrollmentprocess.PlayerInfo;
 
 import java.util.Map;
 
-public interface PlayerManagementProvider {
+public interface PlayerManagementProviderPort {
     String CMS_PLAYER_NAME = "cms_player_name";
     String CMS_RANK = "cms_rank";
 

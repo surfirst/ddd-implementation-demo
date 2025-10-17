@@ -2,7 +2,7 @@ package com.example.enrollment.infrastructure.adapters.pm;
 
 import com.example.enrollment.domain.enrollmentprocess.EnrolledPlayer;
 import com.example.enrollment.domain.enrollmentprocess.PlayerInfo;
-import com.example.enrollment.domain.enrollmentprocess.ports.PlayerManagementProvider;
+import com.example.enrollment.domain.enrollmentprocess.ports.PlayerManagementProviderPort;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +12,7 @@ import java.util.UUID;
 
 @Service
 @Profile("mock")
-public class MockPlayerManagementProvider implements PlayerManagementProvider {
+public class MockPlayerManagementProvider implements PlayerManagementProviderPort {
     @Override
     public EnrolledPlayer findPlayerByEmail(String email) {
         return null;

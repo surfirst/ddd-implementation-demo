@@ -4,11 +4,11 @@ import com.example.enrollment.application.registration.RegistrationService;
 import com.example.enrollment.domain.emailtemplates.EmailTemplateManager;
 import com.example.enrollment.domain.emailtemplates.EmailTemplateRepository;
 import com.example.enrollment.domain.enrollmentprocess.RegistrationEnrollmentRepository;
-import com.example.enrollment.domain.enrollmentprocess.ports.CaptchaService;
-import com.example.enrollment.domain.enrollmentprocess.ports.GlobalSettings;
-import com.example.enrollment.domain.enrollmentprocess.ports.MailService;
-import com.example.enrollment.domain.enrollmentprocess.ports.PlayerManagementProvider;
-import com.example.enrollment.domain.enrollmentprocess.ports.WalletService;
+import com.example.enrollment.domain.enrollmentprocess.ports.CaptchaServicePort;
+import com.example.enrollment.domain.enrollmentprocess.ports.GlobalSettingsPort;
+import com.example.enrollment.domain.enrollmentprocess.ports.MailServicePort;
+import com.example.enrollment.domain.enrollmentprocess.ports.PlayerManagementProviderPort;
+import com.example.enrollment.domain.enrollmentprocess.ports.WalletServicePort;
 import com.example.enrollment.domain.shared.SupportedLanguage;
 import com.example.enrollment.domain.time.DateTimeProvider;
 import com.example.enrollment.domain.time.DefaultDateTimeProvider;
@@ -48,23 +48,23 @@ public class InfrastructureConfig {
     }
 
     @Bean
-    public com.example.enrollment.domain.enrollmentprocess.ports.Logger domainLogger() {
+    public com.example.enrollment.domain.enrollmentprocess.ports.LoggerPort domainLogger() {
         return new Slf4jLoggerAdapter();
     }
 
     @Bean
-    public GlobalSettings globalSettings(com.example.enrollment.domain.enrollmentprocess.ports.Logger logger) {
+    public GlobalSettingsPort globalSettings(com.example.enrollment.domain.enrollmentprocess.ports.LoggerPort logger) {
         return () -> logger;
     }
 
     @Bean
-    public RegistrationService registrationService(CaptchaService captchaService,
-                                                   MailService mailService,
+    public RegistrationService registrationService(CaptchaServicePort captchaService,
+                                                   MailServicePort mailService,
                                                    RegistrationEnrollmentRepository repo,
-                                                   PlayerManagementProvider pm,
+                                                   PlayerManagementProviderPort pm,
                                                    EmailTemplateManager manager,
-                                                   java.util.Set<WalletService> walletServices,
-                                                   GlobalSettings settings,
+                                                   java.util.Set<WalletServicePort> walletServices,
+                                                   GlobalSettingsPort settings,
                                                    DateTimeProvider dateTimeProvider) {
         return new RegistrationService(captchaService, mailService, repo, pm, manager, walletServices, settings, dateTimeProvider);
     }

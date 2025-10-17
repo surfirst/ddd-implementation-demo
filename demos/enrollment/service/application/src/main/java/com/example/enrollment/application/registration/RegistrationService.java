@@ -2,33 +2,33 @@ package com.example.enrollment.application.registration;
 
 import com.example.enrollment.domain.emailtemplates.EmailTemplateManager;
 import com.example.enrollment.domain.enrollmentprocess.*;
-import com.example.enrollment.domain.enrollmentprocess.ports.CaptchaService;
-import com.example.enrollment.domain.enrollmentprocess.ports.GlobalSettings;
-import com.example.enrollment.domain.enrollmentprocess.ports.MailService;
-import com.example.enrollment.domain.enrollmentprocess.ports.PlayerManagementProvider;
-import com.example.enrollment.domain.enrollmentprocess.ports.WalletService;
+import com.example.enrollment.domain.enrollmentprocess.ports.CaptchaServicePort;
+import com.example.enrollment.domain.enrollmentprocess.ports.GlobalSettingsPort;
+import com.example.enrollment.domain.enrollmentprocess.ports.MailServicePort;
+import com.example.enrollment.domain.enrollmentprocess.ports.PlayerManagementProviderPort;
+import com.example.enrollment.domain.enrollmentprocess.ports.WalletServicePort;
 import com.example.enrollment.domain.shared.SupportedLanguage;
 import com.example.enrollment.domain.time.DateTimeProvider;
 
 import java.util.*;
 
 public class RegistrationService {
-    private final CaptchaService captchaService;
-    private final MailService mailService;
+    private final CaptchaServicePort captchaService;
+    private final MailServicePort mailService;
     private final RegistrationEnrollmentRepository enrollmentRepository;
-    private final PlayerManagementProvider playerManagementProvider;
+    private final PlayerManagementProviderPort playerManagementProvider;
     private final EmailTemplateManager templateManager;
-    private final Set<WalletService> walletServices;
-    private final GlobalSettings globalSettings;
+    private final Set<WalletServicePort> walletServices;
+    private final GlobalSettingsPort globalSettings;
     private final DateTimeProvider dateTimeProvider;
 
-    public RegistrationService(CaptchaService captchaService,
-                               MailService mailService,
+    public RegistrationService(CaptchaServicePort captchaService,
+                               MailServicePort mailService,
                                RegistrationEnrollmentRepository enrollmentRepository,
-                               PlayerManagementProvider playerManagementProvider,
+                               PlayerManagementProviderPort playerManagementProvider,
                                EmailTemplateManager templateManager,
-                               Set<WalletService> walletServices,
-                               GlobalSettings globalSettings,
+                               Set<WalletServicePort> walletServices,
+                               GlobalSettingsPort globalSettings,
                                DateTimeProvider dateTimeProvider) {
         this.captchaService = Objects.requireNonNull(captchaService);
         this.mailService = Objects.requireNonNull(mailService);
@@ -82,14 +82,14 @@ public class RegistrationService {
         Map<String, Object> paras = new HashMap<>();
         paras.put("player_id", ep.getCmsId());
         if (detail != null) {
-            if (detail.containsKey(PlayerManagementProvider.CMS_PLAYER_NAME)) {
-                paras.put("player_name", detail.get(PlayerManagementProvider.CMS_PLAYER_NAME));
+            if (detail.containsKey(PlayerManagementProviderPort.CMS_PLAYER_NAME)) {
+                paras.put("player_name", detail.get(PlayerManagementProviderPort.CMS_PLAYER_NAME));
             }
-            if (detail.containsKey(PlayerManagementProvider.CMS_RANK)) {
-                paras.put("rank", detail.get(PlayerManagementProvider.CMS_RANK));
+            if (detail.containsKey(PlayerManagementProviderPort.CMS_RANK)) {
+                paras.put("rank", detail.get(PlayerManagementProviderPort.CMS_RANK));
             }
         }
-        for (WalletService w : walletServices) {
+        for (WalletServicePort w : walletServices) {
             try {
                 String link = w.getLink(ep.getCmsId(), (String) paras.getOrDefault("player_name", ""));
                 paras.put(w.name(), link);

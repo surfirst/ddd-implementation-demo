@@ -8,12 +8,12 @@ import com.example.enrollment.domain.enrollmentprocess.Otp;
 import com.example.enrollment.domain.enrollmentprocess.PlayerInfo;
 import com.example.enrollment.domain.enrollmentprocess.RegistrationEnrollment;
 import com.example.enrollment.domain.enrollmentprocess.RegistrationEnrollmentRepository;
-import com.example.enrollment.domain.enrollmentprocess.ports.CaptchaService;
-import com.example.enrollment.domain.enrollmentprocess.ports.GlobalSettings;
-import com.example.enrollment.domain.enrollmentprocess.ports.Logger;
-import com.example.enrollment.domain.enrollmentprocess.ports.MailService;
-import com.example.enrollment.domain.enrollmentprocess.ports.PlayerManagementProvider;
-import com.example.enrollment.domain.enrollmentprocess.ports.WalletService;
+import com.example.enrollment.domain.enrollmentprocess.ports.CaptchaServicePort;
+import com.example.enrollment.domain.enrollmentprocess.ports.GlobalSettingsPort;
+import com.example.enrollment.domain.enrollmentprocess.ports.LoggerPort;
+import com.example.enrollment.domain.enrollmentprocess.ports.MailServicePort;
+import com.example.enrollment.domain.enrollmentprocess.ports.PlayerManagementProviderPort;
+import com.example.enrollment.domain.enrollmentprocess.ports.WalletServicePort;
 import com.example.enrollment.domain.shared.SupportedLanguage;
 import com.example.enrollment.domain.time.DateTimeProvider;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,27 +28,27 @@ import static org.mockito.Mockito.*;
 
 class RegistrationServiceTest {
 
-    CaptchaService captchaService;
-    MailService mailService;
+    CaptchaServicePort captchaService;
+    MailServicePort mailService;
     RegistrationEnrollmentRepository repo;
-    PlayerManagementProvider pm;
+    PlayerManagementProviderPort pm;
     EmailTemplateRepository templateRepo;
     EmailTemplateManager manager;
-    Set<WalletService> wallets;
-    GlobalSettings globalSettings;
-    Logger logger;
+    Set<WalletServicePort> wallets;
+    GlobalSettingsPort globalSettings;
+    LoggerPort logger;
     DateTimeProvider dateTimeProvider;
 
     @BeforeEach
     void setup() {
-        captchaService = mock(CaptchaService.class);
-        mailService = mock(MailService.class);
+        captchaService = mock(CaptchaServicePort.class);
+        mailService = mock(MailServicePort.class);
         repo = mock(RegistrationEnrollmentRepository.class);
-        pm = mock(PlayerManagementProvider.class);
+        pm = mock(PlayerManagementProviderPort.class);
         templateRepo = mock(EmailTemplateRepository.class);
         wallets = new HashSet<>();
-        globalSettings = mock(GlobalSettings.class);
-        logger = mock(Logger.class);
+        globalSettings = mock(GlobalSettingsPort.class);
+        logger = mock(LoggerPort.class);
         when(globalSettings.logger()).thenReturn(logger);
         dateTimeProvider = mock(DateTimeProvider.class);
         when(dateTimeProvider.nowUtc()).thenReturn(Instant.now());
@@ -146,8 +146,8 @@ class RegistrationServiceTest {
         when(repo.getEnrollment(enrollment.getId())).thenReturn(enrollment);
         when(pm.enrollPlayer(any())).thenReturn(new EnrolledPlayer("mock_id", null));
         when(pm.getPlayerDetail(anyString())).thenReturn(new HashMap<>() {{
-            put(PlayerManagementProvider.CMS_PLAYER_NAME, "cms_name");
-            put(PlayerManagementProvider.CMS_RANK, "cms_rank");
+            put(PlayerManagementProviderPort.CMS_PLAYER_NAME, "cms_name");
+            put(PlayerManagementProviderPort.CMS_RANK, "cms_rank");
         }});
 
         s.verifyOtp(enrollment.getId(), enrollment.getOtp().getPassword(), SupportedLanguage.EN);
@@ -158,13 +158,13 @@ class RegistrationServiceTest {
     void welcomeEmailShouldHaveWalletLink() {
         EmailTemplateManager m = managerWith("welcome", "$$google_wallet$$|$$apple_wallet$$");
 
-        WalletService google = mock(WalletService.class);
+        WalletServicePort google = mock(WalletServicePort.class);
         when(google.name()).thenReturn("google_wallet");
         when(google.getLink(anyString(), anyString())).thenReturn("google|mock_id|cms_name");
-        WalletService apple = mock(WalletService.class);
+        WalletServicePort apple = mock(WalletServicePort.class);
         when(apple.name()).thenReturn("apple_wallet");
         when(apple.getLink(anyString(), anyString())).thenReturn("apple|mock_id|cms_name");
-        WalletService broken = mock(WalletService.class);
+        WalletServicePort broken = mock(WalletServicePort.class);
         when(broken.name()).thenReturn("broken");
         when(broken.getLink(anyString(), anyString())).thenThrow(new RuntimeException("Wallet Exception"));
 
@@ -177,8 +177,8 @@ class RegistrationServiceTest {
         when(repo.getEnrollment(enrollment.getId())).thenReturn(enrollment);
         when(pm.enrollPlayer(any())).thenReturn(new EnrolledPlayer("mock_id", null));
         when(pm.getPlayerDetail(anyString())).thenReturn(new HashMap<>() {{
-            put(PlayerManagementProvider.CMS_PLAYER_NAME, "cms_name");
-            put(PlayerManagementProvider.CMS_RANK, "cms_rank");
+            put(PlayerManagementProviderPort.CMS_PLAYER_NAME, "cms_name");
+            put(PlayerManagementProviderPort.CMS_RANK, "cms_rank");
         }});
 
         s.verifyOtp(enrollment.getId(), enrollment.getOtp().getPassword(), SupportedLanguage.EN);

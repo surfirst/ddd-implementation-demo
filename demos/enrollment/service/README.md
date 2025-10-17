@@ -13,7 +13,7 @@ This is a multi-module Java project demonstrating DDD Layered Architecture with 
 - **Root Maven:** `ddd-demo/service/pom.xml` (parent POM)
 - **Key packages:**
   - Domain: `domain/src/main/java/com/example/enrollment/domain/...`
-    - Registration flow: `.../enrollmentprocess/` (e.g., `Enrollment`, `Otp`, `RegistrationEnrollmentRepository`)
+    - Registration flow: `.../enrollmentprocess/` (e.g., `RegistrationEnrollment`, `Otp`, `RegistrationEnrollmentRepository`)
     - Email templates: `.../emailtemplates/` (e.g., `EmailTemplateManager`, `EmailTemplateRepository`)
     - Ports: `.../enrollmentprocess/ports/` (e.g., `CaptchaService`, `MailService`, `PlayerManagementProvider`, `WalletService`)
   - Infrastructure:
@@ -24,8 +24,6 @@ This is a multi-module Java project demonstrating DDD Layered Architecture with 
     - Liquibase: `infrastructure/src/main/resources/db/changelog/`
     - MyBatis mappers: `infrastructure/src/main/resources/mappers/`
   - API: `api/src/main/java/com/example/enrollment/api/web/`
-
-Note: A minimal "simple demo" aggregate exists under `domain/.../enrollment/` and its API/infra. It is separate from the full registration flow in `.../enrollmentprocess/`.
 
 ## Build & Test
 
@@ -125,7 +123,7 @@ Beans are wired in `infrastructure/src/main/java/.../config/InfrastructureConfig
 - **Domain/Application purity**: No Spring or infra deps in `domain/` or `application/`.
 - **Ports**: Defined in `domain/.../ports/`.
 - **Adapters**: Implemented in `infrastructure/` (mock and DB).
-- **Factories**: Aggregates rehydrated via static factories (e.g., `Enrollment.rehydrate(...)`, `Otp.rehydrate(...)`).
+- **Factories**: Aggregates rehydrated via static factories (e.g., `RegistrationEnrollment.rehydrate(...)`, `Otp.rehydrate(...)`).
 
 ## Environment & Misc
 
