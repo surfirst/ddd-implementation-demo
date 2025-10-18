@@ -1,8 +1,6 @@
 这里展示了使用领域驱动设计(DDD)的分层架构和六边形架构实现的完整代码，供希望从数据库驱动的软件设计升级为以领域模型驱动的软件设计的架构师、高级开发者参考。
 
-## C4 架构架构图
 
-项目的 C4 架构图可以参考 [`doc-demos/arc/ecms-cc.dsl`](doc-demos/arc/ecms-cc.dsl) 这个示例进行设计。使用 https://structurizr.com/dsl 进行设计，然后导出和预览 C4 架构图。
 
 
 ## 分层架构和六边形架构示例
@@ -17,3 +15,11 @@
 - **领域守护测试**：`demos/enrollment/service/application/src/test/java/com/example/enrollment/application/registration/RegistrationServiceTest.java` 覆盖核心报名场景，验证并守护领域模型行为。
 
 
+## 参考文档
+## C4 架构架构图
+
+项目的 C4 架构图可以参考 [`doc-demos/arc/ecms-cc.dsl`](doc-demos/arc/ecms-cc.dsl) 这个示例进行设计。使用 https://structurizr.com/dsl 进行设计，然后导出和预览 C4 架构图。
+
+## AI 编码规则
+
+AI代码编辑器通常会有规则(rule)设置，AI 编码规则可以参考 [`doc-demos/arc/ai-coder-rules.md`](doc-demos/arc/ai-coder-rules.md)。
